@@ -10,6 +10,7 @@ import 'slider_label.dart';
 import 'dart:math' as math;
 
 part 'curve_painter.dart';
+
 part 'custom_gesture_recognizer.dart';
 
 typedef void OnChange(double value);
@@ -43,6 +44,7 @@ class SleekCircularSlider extends StatefulWidget {
       : assert(min <= max),
         assert(initialValue >= min && initialValue <= max),
         super(key: key);
+
   @override
   _SleekCircularSliderState createState() => _SleekCircularSliderState();
 }
@@ -82,8 +84,8 @@ class _SleekCircularSliderState extends State<SleekCircularSlider>
 
   @override
   void didUpdateWidget(SleekCircularSlider oldWidget) {
-    if (oldWidget.angle != widget.angle &&
-        _currentAngle?.toStringAsFixed(4) != widget.angle.toStringAsFixed(4)) {
+    _oldWidgetAngle = _currentAngle;
+    if (_currentAngle?.toStringAsFixed(4) != widget.angle.toStringAsFixed(4)) {
       _animate();
     }
     super.didUpdateWidget(oldWidget);
@@ -141,9 +143,12 @@ class _SleekCircularSliderState extends State<SleekCircularSlider>
   @override
   Widget build(BuildContext context) {
     /// _setupPainter excution when _painter is null or appearance has changed.
-    if (_painter == null || _appearanceHashCode != widget.appearance.hashCode) {
+    if (_painter == null) {
       _appearanceHashCode = widget.appearance.hashCode;
       _setupPainter();
+    }
+    if (_appearanceHashCode != widget.appearance.hashCode) {
+      _appearanceHashCode = widget.appearance.hashCode;
     }
     return RawGestureDetector(
         gestures: <Type, GestureRecognizerFactory>{
