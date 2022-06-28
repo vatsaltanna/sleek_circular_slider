@@ -1,16 +1,17 @@
 library circular_slider;
 
-import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:sleek_circular_slider/src/slider_animations.dart';
-import 'utils.dart';
-import 'appearance.dart';
-import 'slider_label.dart';
 import 'dart:math' as math;
 
-part 'curve_painter.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:sleek_circular_slider/src/slider_animations.dart';
 
+import 'appearance.dart';
+import 'slider_label.dart';
+import 'utils.dart';
+
+part 'curve_painter.dart';
 part 'custom_gesture_recognizer.dart';
 
 typedef void OnChange(double value);
@@ -271,14 +272,11 @@ class _SleekCircularSliderState extends State<SleekCircularSlider>
     final double touchWidth = widget.appearance.progressBarWidth >= 25.0
         ? widget.appearance.progressBarWidth
         : 25.0;
-    if (isPointAlongCircle(
-        position, _painter!.center!, _painter!.radius, touchWidth)) {
-      _selectedAngle = coordinatesToRadians(_painter!.center!, position);
-      // setup painter with new angle values and update onChange
-      _setupPainter(counterClockwise: widget.appearance.counterClockwise);
-      _updateOnChange();
-      setState(() {});
-    }
+    _selectedAngle = coordinatesToRadians(_painter!.center!, position);
+    // setup painter with new angle values and update onChange
+    _setupPainter(counterClockwise: widget.appearance.counterClockwise);
+    _updateOnChange();
+    setState(() {});
   }
 
   bool _onPanDown(Offset details) {
